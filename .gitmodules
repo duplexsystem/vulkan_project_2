@@ -1,0 +1,33 @@
+[submodule "libs/mimalloc"]
+	path = libs/mimalloc
+	url = https://github.com/microsoft/mimalloc.git
+[submodule "libs/fmt"]
+	path = libs/fmt
+	url = https://github.com/fmtlib/fmt
+[submodule "libs/spdlog"]
+	path = libs/spdlog
+	url = https://github.com/gabime/spdlog
+[submodule "libs/glfw"]
+	path = libs/glfw
+	url = https://github.com/glfw/glfw
+[submodule "libs/boxer"]
+	path = libs/boxer
+	url = https://github.com/aaronmjacobs/Boxer
+[submodule "libs/vulkan"]
+	path = libs/vulkan
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git
+[submodule "libs/vkbootstrap"]
+	path = libs/vkbootstrap
+	url = https://github.com/charles-lunarg/vk-bootstrap.git
+[submodule "libs/volk"]
+	path = libs/volk
+	url = https://github.com/zeux/volk
+[submodule "libs/vulkanutilitylibraries"]
+	path = libs/vulkanutilitylibraries
+	url = https://github.com/KhronosGroup/Vulkan-Utility-Libraries
+[submodule "libs/vulkanmemoryallocator"]
+	path = libs/vulkanmemoryallocator
+	url = https://github.com/GPUOpen-LibrariesAndSDKs/VulkanMemoryAllocator
+[submodule "libs/glm"]
+	path = libs/glm
+	url = https://github.com/g-truc/glm
