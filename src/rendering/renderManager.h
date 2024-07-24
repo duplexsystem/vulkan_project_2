@@ -4,33 +4,15 @@
 
 #ifndef RENDERER_H
 #define RENDERER_H
-#include "renderingPCH.h"
-
+#include "vulkan/vulkanManager.h"
 
 class renderManager {
-#ifndef NDEBUG
-    bool bUseValidationLayers = true;
-#elif
-    bool bUseValidationLayers = false;
-#endif
-
-
-    GLFWwindow *window;
-    vkb::Instance vkbInstance;
-    VkSurfaceKHR surface;
-    vkb::PhysicalDevice vkbPhysicalDevice;
-    vkb::Device vkbDevice;
-    VkQueue graphicsQueue;
-    uint32_t graphicsQueueFamily;
-    vkb::Swapchain vkbSwapchain;
-    std::vector<VkImage> swapchainImages;
-    std::vector<VkImageView> swapchainImageViews;
+  vulkanManager *vulkanManagerInstance;
 
 public:
-    renderManager(int width, int height, const char *title);
+  renderManager(int width, int height, const char *title);
 
-    ~renderManager();
+  ~renderManager();
 };
 
-
-#endif //RENDERER_H
+#endif // RENDERER_H

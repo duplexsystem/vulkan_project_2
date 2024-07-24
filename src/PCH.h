@@ -4,9 +4,9 @@
 
 #ifndef PCH_H
 #define PCH_H
-#include <mimalloc.h>
-#include <mimalloc-override.h>
-#include <fmt/format.h>
-#include <spdlog/spdlog.h>
 #include <boxer/boxer.h>
-#endif //PCH_H
+#include <fmt/format.h>
+#include <mimalloc-override.h>
+#include <mimalloc.h>
+#include <spdlog/spdlog.h>
+#endif // PCH_H

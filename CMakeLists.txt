@@ -5,14 +5,16 @@ set(CMAKE_CXX_STANDARD 20)
 
 
 add_executable(vcpkgtest src/main.cpp
-        src/rendering/vulkan/vulkanLifecycle.cpp
-        src/rendering/vulkan/vulkanLifecycle.h
-        src/rendering/windowing/glfwWindow.cpp
-        src/rendering/windowing/glfwWindow.h
+        src/rendering/vulkan/util/vulkanLifecycleUtil.cpp
+        src/rendering/vulkan/util/vulkanLifecycleUtil.h
+        src/rendering/vulkan/windowing/utils/glfwLifecycleUtils.cpp
+        src/rendering/vulkan/windowing/utils/glfwLifecycleUtils.h
         src/rendering/renderManager.cpp
         src/rendering/renderManager.h
-        src/rendering/renderingPCH.h
+        src/rendering/vulkan/vulkanPCH.h
         src/PCH.h
+        src/rendering/vulkan/vulkanManager.cpp
+        src/rendering/vulkan/vulkanManager.h
 )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/mimalloc)
