@@ -32,9 +32,9 @@ vulkanManager::vulkanManager(int width, int height, const char *title) {
         auto graphicsQueueResult = vkbDevice.get_queue(vkb::QueueType::graphics);
         if (!graphicsQueueResult.has_value()) {
             throw std::runtime_error(
-  fmt::format(
-                     "Failed to get graphics queue from device: {}",
-                     graphicsQueueResult.error().message()));
+                fmt::format(
+                    "Failed to get graphics queue from device: {}",
+                    graphicsQueueResult.error().message()));
         }
         graphicsQueue = graphicsQueueResult.value();
         auto graphicsQueueFamilyResult =
@@ -58,6 +58,9 @@ vulkanManager::vulkanManager(int width, int height, const char *title) {
                                                  swapchainImageViewsResult.error().message()));
         }
         swapchainImageViews = swapchainImageViewsResult.value();
+
+        vulkanLifecycleUtil::createCommands(graphicsQueueFamily, vkbDevice.device,
+                                            frames);
     } catch (std::runtime_error &e) {
         show(e.what(),
              fmt::format("Error initializing {} renderer.", title).c_str(),
@@ -74,11 +77,14 @@ void vulkanManager::run() {
 }
 
 void vulkanManager::draw() {
-
 }
 
 vulkanManager::~vulkanManager() {
     vkDeviceWaitIdle(vkbDevice.device);
+
+    for (auto &frame: frames) {
+        vkDestroyCommandPool(vkbDevice.device, frame.commandPool, nullptr);
+    }
 
     vkbSwapchain.destroy_image_views(swapchainImageViews);
     destroy_swapchain(vkbSwapchain);

@@ -15,6 +15,7 @@ add_executable(vcpkgtest src/main.cpp
         src/PCH.h
         src/rendering/vulkan/vulkanManager.cpp
         src/rendering/vulkan/vulkanManager.h
+        src/rendering/vulkan/struct/vulkanCommandStruct.h
 )
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libs/mimalloc)

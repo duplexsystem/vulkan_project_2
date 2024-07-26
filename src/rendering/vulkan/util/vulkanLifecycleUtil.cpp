@@ -4,9 +4,10 @@
 
 #include "vulkanLifecycleUtil.h"
 
+
 vkb::Instance
 vulkanLifecycleUtil::createInstance(const bool bUseValidationLayers,
-                                     const char *title) {
+                                    const char *title) {
   if (auto volkResult = volkInitialize(); volkResult != VK_SUCCESS) {
     throw std::runtime_error(fmt::format("Failed to initialize volk: {}",
                                          string_VkResult(volkResult)));
@@ -55,7 +56,7 @@ vulkanLifecycleUtil::createInstance(const bool bUseValidationLayers,
 
 vkb::PhysicalDevice
 vulkanLifecycleUtil::selectPhysicalDevice(vkb::Instance vkbInstance,
-                                           VkSurfaceKHR surface) {
+                                          VkSurfaceKHR surface) {
   // vulkan 1.3 features
   VkPhysicalDeviceVulkan13Features features{
     .sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_VULKAN_1_3_FEATURES
@@ -132,4 +133,52 @@ vkb::Swapchain vulkanLifecycleUtil::createSwapchain(
   }
 
   return swapchain.value();
+}
+
+VkCommandPoolCreateInfo command_pool_create_info(uint32_t queueFamilyIndex,
+                                                 VkCommandPoolCreateFlags flags /*= 0*/) {
+  VkCommandPoolCreateInfo info = {};
+  info.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+  info.pNext = nullptr;
+  info.queueFamilyIndex = queueFamilyIndex;
+  info.flags = flags;
+  return info;
+}
+
+VkCommandBufferAllocateInfo command_buffer_allocate_info(
+  VkCommandPool pool, uint32_t count /*= 1*/) {
+  VkCommandBufferAllocateInfo info = {};
+  info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+  info.pNext = nullptr;
+
+  info.commandPool = pool;
+  info.commandBufferCount = count;
+  info.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+  return info;
+}
+
+
+void vulkanLifecycleUtil::createCommands(uint32_t graphicsQueueFamily,
+                                         VkDevice device, FrameData *frames) {
+  //create a command pool for commands submitted to the graphics queue.
+  //we also want the pool to allow for resetting of individual command buffers
+  VkCommandPoolCreateInfo commandPoolInfo = command_pool_create_info(graphicsQueueFamily,
+                                                                     VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT);
+
+  for (int i = 0; i < FRAME_OVERLAP; i++) {
+    if (auto createCommandPoolResult = vkCreateCommandPool(device, &commandPoolInfo, nullptr, &frames[i].commandPool);
+      createCommandPoolResult != VK_SUCCESS) {
+      throw std::runtime_error(fmt::format("Failed to create command pool: {}",
+                                           string_VkResult(createCommandPoolResult)));
+    }
+
+    // allocate the default command buffer that we will use for rendering
+    VkCommandBufferAllocateInfo cmdAllocInfo = command_buffer_allocate_info(frames[i].commandPool, 1);
+
+    if (auto allocateCommandPoolResult = vkAllocateCommandBuffers(device, &cmdAllocInfo, &frames[i].mainCommandBuffer);
+      allocateCommandPoolResult != VK_SUCCESS) {
+      throw std::runtime_error(fmt::format("Failed to allocate command pool: {}",
+                                           string_VkResult(allocateCommandPoolResult)));
+    }
+  }
 }

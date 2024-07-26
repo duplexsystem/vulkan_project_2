@@ -7,6 +7,10 @@
 
 #include "../vulkanPCH.h"
 
+
+#include "../struct/vulkanCommandStruct.h"
+
+
 class vulkanLifecycleUtil {
 public:
     static vkb::Instance createInstance(bool bUseValidationLayers,
@@ -23,7 +27,8 @@ public:
                     const vkb::PhysicalDevice &vkbPhysicalDevice,
                     const vkb::Device &vkbDevice, const VkSurfaceKHR &surface);
 
-
+    static void createCommands(uint32_t graphicsQueueFamily,
+                               VkDevice device, FrameData *frames);
 };
 
 #endif // VULKANLIFECYCLEUTIL_H

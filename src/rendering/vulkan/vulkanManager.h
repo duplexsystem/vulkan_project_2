@@ -5,6 +5,7 @@
 #ifndef VULKANMANAGER_H
 #define VULKANMANAGER_H
 #include "vulkanPCH.h"
+#include "struct/vulkanCommandStruct.h"
 
 
 class vulkanManager {
@@ -14,6 +15,7 @@ class vulkanManager {
     bool bUseValidationLayers = false;
 #endif
 
+    int frameNumber{0};
 
     GLFWwindow *window;
     vkb::Instance vkbInstance;
@@ -25,6 +27,9 @@ class vulkanManager {
     vkb::Swapchain vkbSwapchain;
     std::vector<VkImage> swapchainImages;
     std::vector<VkImageView> swapchainImageViews;
+    FrameData frames[FRAME_OVERLAP];
+
+    FrameData &get_current_frame() { return frames[frameNumber % FRAME_OVERLAP]; };
 
 public:
     vulkanManager(int width, int height, const char *title);
